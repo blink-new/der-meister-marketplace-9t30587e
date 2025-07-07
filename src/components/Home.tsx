@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
+import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
@@ -99,6 +100,15 @@ export const Home: React.FC<HomeProps> = ({ user }) => {
               <span className="text-sm text-gray-600">
                 Willkommen, {user.name}
               </span>
+              {/* Provider dashboard shortcut */}
+              {user.role === 'provider' && (
+                <Link
+                  to="/provider/dashboard"
+                  className="text-sm font-medium text-blue-600 hover:underline"
+                >
+                  Dashboard
+                </Link>
+              )}
               <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-orange-500 rounded-full flex items-center justify-center text-white font-semibold">
                 {user.name[0]}
               </div>
@@ -200,49 +210,51 @@ export const Home: React.FC<HomeProps> = ({ user }) => {
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card className="overflow-hidden hover:shadow-lg transition-all duration-200 cursor-pointer">
-                  <div className="relative">
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="w-full h-48 object-cover"
-                    />
-                    <button className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:bg-gray-50 transition-colors">
-                      <Heart className="h-4 w-4 text-gray-600" />
-                    </button>
-                    {service.verified && (
-                      <Badge className="absolute top-3 left-3 bg-green-500 text-white">
-                        ✓ Verifiziert
-                      </Badge>
-                    )}
-                  </div>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-semibold text-gray-900 truncate">{service.title}</h4>
-                      <div className="flex items-center gap-1 text-yellow-500">
-                        <Star className="h-4 w-4 fill-current" />
-                        <span className="text-sm font-medium">{service.rating}</span>
-                      </div>
+                <Link to={`/services/${service.id}`}>
+                  <Card className="overflow-hidden hover:shadow-lg transition-all duration-200 cursor-pointer">
+                    <div className="relative">
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        className="w-full h-48 object-cover"
+                      />
+                      <button className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:bg-gray-50 transition-colors">
+                        <Heart className="h-4 w-4 text-gray-600" />
+                      </button>
+                      {service.verified && (
+                        <Badge className="absolute top-3 left-3 bg-green-500 text-white">
+                          ✓ Verifiziert
+                        </Badge>
+                      )}
                     </div>
-                    <p className="text-sm text-gray-600 mb-2">{service.provider}</p>
-                    <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
-                      <MapPin className="h-4 w-4" />
-                      {service.location}
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <Euro className="h-4 w-4 text-green-600" />
-                        <span className="font-semibold text-green-600">
-                          {service.price}€ {service.priceType === 'hourly' ? '/h' : ''}
-                        </span>
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-semibold text-gray-900 truncate">{service.title}</h4>
+                        <div className="flex items-center gap-1 text-yellow-500">
+                          <Star className="h-4 w-4 fill-current" />
+                          <span className="text-sm font-medium">{service.rating}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1 text-sm text-gray-500">
-                        <Clock className="h-4 w-4" />
-                        {service.reviews} {t('reviews')}
+                      <p className="text-sm text-gray-600 mb-2">{service.provider}</p>
+                      <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                        <MapPin className="h-4 w-4" />
+                        {service.location}
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1">
+                          <Euro className="h-4 w-4 text-green-600" />
+                          <span className="font-semibold text-green-600">
+                            {service.price}€ {service.priceType === 'hourly' ? '/h' : ''}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1 text-sm text-gray-500">
+                          <Clock className="h-4 w-4" />
+                          {service.reviews} {t('reviews')}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
               </motion.div>
             ))}
           </div>
